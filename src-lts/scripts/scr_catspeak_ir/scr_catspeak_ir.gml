@@ -982,6 +982,7 @@ enum CatspeakTerm {
     GLOBAL,
     FUNCTION,
     SELF,
+    OTHER,
     /// @ignore
     __SIZE__
 }

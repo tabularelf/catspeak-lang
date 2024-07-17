@@ -1308,6 +1308,17 @@ function CatspeakGMLCompiler(ir, interface=undefined) constructor {
     static __compileSelf = function (ctx, term) {
         return method(sharedData, __catspeak_expr_self__);
     };
+	
+    /// @ignore
+    ///
+    /// @experimental
+    ///
+    /// @param {Struct} ctx
+    /// @param {Struct} term
+    /// @return {Function}
+    static __compileOther = function (ctx, term) {
+        return method(sharedData, __catspeak_expr_other__);
+    };
 
     /// @ignore
     ///
@@ -1352,6 +1363,7 @@ function CatspeakGMLCompiler(ir, interface=undefined) constructor {
         db[@ CatspeakTerm.LOCAL] = __compileLocal;
         db[@ CatspeakTerm.FUNCTION] = __compileFunctionExpr;
         db[@ CatspeakTerm.SELF] = __compileSelf;
+        db[@ CatspeakTerm.OTHER] = __compileOther;
         db[@ CatspeakTerm.AND] = __compileAnd;
         db[@ CatspeakTerm.OR] = __compileOr;
         return db;
