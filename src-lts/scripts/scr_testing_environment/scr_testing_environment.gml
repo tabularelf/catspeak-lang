@@ -704,3 +704,32 @@ test_add(function() : Test("method-scope-vs-undefined") constructor {
     }
     show_debug_message("gmlFuncB (funcM) Time taken: " + string((get_timer() - t) / 1000) + "ms");
 });
+
+
+test_add(function() : Test("method-scope-vs-undefined-with-method") constructor {
+    var env = new CatspeakEnvironment();
+    var func = function(value) {
+        return value * 32;
+    }
+    
+    var ir = env.parseString(@'
+        self.func(0.5);
+    ');
+    
+    var compiledFunc = env.compile(ir);
+	
+	var structA = {func: method(undefined, func)};
+	var structB = {func: func};
+    
+    var t = get_timer();
+	repeat(100000) {
+		catspeak_execute_ext(compiledFunc, structA);
+	}
+    show_debug_message("structA (func) Time taken: " + string((get_timer() - t) / 1000) + "ms");
+    
+    t = get_timer();
+	repeat(100000) {
+		catspeak_execute_ext(compiledFunc, structB);
+	}
+    show_debug_message("structB (funcM) Time taken: " + string((get_timer() - t) / 1000) + "ms");
+});

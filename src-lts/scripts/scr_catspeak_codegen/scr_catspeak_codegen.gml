@@ -1758,6 +1758,14 @@ function __catspeak_expr_op_2__() {
 /// @ignore
 /// @return {Any}
 function __catspeak_expr_call_method__() {
+	static methodCall = (function() {
+		try {
+			var func = method_call;
+			return true;	
+		} catch(_) {
+			return false;	
+		}
+	})();
     // TODO :: this method call stuff is crap, please figure out a better way
     var collection_ = collection();
     var key_ = key();
@@ -1788,6 +1796,11 @@ function __catspeak_expr_call_method__() {
         }
     }
     var shared_ = shared;
+	
+	if (methodCall) && (method_get_self(callee_) != undefined) {
+		return method_call(callee_, args_);
+	}
+	
     with (method_get_self(callee_) ?? collection_) {
         var calleeIdx = method_get_index(callee_);
         return script_execute_ext(calleeIdx, args_);
@@ -1797,6 +1810,15 @@ function __catspeak_expr_call_method__() {
 /// @ignore
 /// @return {Any}
 function __catspeak_expr_call__() {
+	static methodCall = (function() {
+		try {
+			var func = method_call;
+			return true;	
+		} catch(_) {
+			return false;	
+		}
+	})();
+	
     var callee_ = callee();
     if (!is_method(callee_)) {
         __catspeak_error_got(dbgError, callee_);
@@ -1816,6 +1838,10 @@ function __catspeak_expr_call__() {
         }
     }
     var shared_ = shared;
+	
+	if (methodCall) && (method_get_self(callee_) != undefined) {
+		return method_call(callee_, args_);	
+	}
     with (method_get_self(callee_) ?? (shared_.self_ ?? shared_.globals)) {
         var calleeIdx = method_get_index(callee_);
         return script_execute_ext(calleeIdx, args_);
